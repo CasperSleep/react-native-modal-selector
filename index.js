@@ -133,7 +133,7 @@ export default class ModalSelector extends React.Component {
             this.props.onChange(item);
         }
         this.setState({ selected: this.props.labelExtractor(item), changedItem: item });
-        
+
         if (this.props.closeOnChange)
             this.close();
     }
@@ -168,10 +168,9 @@ export default class ModalSelector extends React.Component {
               onPress={() => this.onChange(option)}
               activeOpacity={this.props.touchableActiveOpacity}
               accessible={this.props.accessible}
-              accessibilityLabel={option.accessibilityLabel || undefined}
               {...this.props.passThruProps}
             >
-                <View style={[styles.optionStyle, this.props.optionStyle, isLastItem &&
+                <View accessibilityLabel={`really${this.props.labelExtractor(option)}`} style={[styles.optionStyle, this.props.optionStyle, isLastItem &&
                 {borderBottomWidth: 0}]}>
                     <Text style={[styles.optionTextStyle,this.props.optionTextStyle]}>{this.props.labelExtractor(option)}</Text>
                 </View>
