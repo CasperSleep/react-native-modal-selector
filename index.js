@@ -165,11 +165,12 @@ export default class ModalSelector extends React.Component {
             onPress={() => this.onChange(option)}
             activeOpacity={this.props.touchableActiveOpacity}
             accessible={this.props.accessible}
+            accessibilityLabel={`really${this.props.labelExtractor(option)}`}
             {...this.props.passThruProps}
         >
-            <View style={[styles.optionStyle, this.props.optionStyle, isLastItem &&
+            <View accessibilityLabel={`reallyReally${this.props.labelExtractor(option)}`} style={[styles.optionStyle, this.props.optionStyle, isLastItem &&
                 {borderBottomWidth: 0}]}>
-                <Text accessibilityLabel={`really${this.props.labelExtractor(option)}`} style={[styles.optionTextStyle,this.props.optionTextStyle]}>{this.props.labelExtractor(option)}</Text>
+                <Text accessibilityLabel={`reallyReallyReally${this.props.labelExtractor(option)}`} style={[styles.optionTextStyle,this.props.optionTextStyle]}>{this.props.labelExtractor(option)}</Text>
             </View>
         </TouchableOpacity>)
 
