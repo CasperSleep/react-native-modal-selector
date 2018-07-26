@@ -64,8 +64,8 @@ const defaultProps = {
     onChange:                       () => {},
     onModalOpen:                    () => {},
     onModalClose:                   () => {},
-    keyExtractor:                   (item) => item.key,
-    labelExtractor:                 (item) => item.label,
+    keyExtractor:                   item => item.key,
+    labelExtractor:                 item => item.label,
     visible:                        false,
     closeOnChange:                  true,
     initValue:                      'Select me!',
@@ -104,10 +104,10 @@ export default class ModalSelector extends React.Component {
         super(props);
 
         this.state = {
-            modalVisible:  props.visible,
-            selected:      props.initValue,
-            cancelText:    props.cancelText,
-            changedItem:   undefined,
+            modalVisible: props.visible,
+            selected:     props.initValue,
+            cancelText:   props.cancelText,
+            changedItem:  undefined,
         };
     }
 
@@ -127,7 +127,7 @@ export default class ModalSelector extends React.Component {
         }
     }
 
-    onChange = (item) => {
+    onChange = item => {
         if (Platform.OS === 'android' || !Modal.propTypes.onDismiss) {
             // RN >= 0.50 on iOS comes with the onDismiss prop for Modal which solves RN issue #10471
             this.props.onChange(item);
@@ -153,29 +153,25 @@ export default class ModalSelector extends React.Component {
         });
     }
 
-    renderSection = (section) => {
-        return (
-            <View key={this.props.keyExtractor(section)} style={[styles.sectionStyle,this.props.sectionStyle]}>
-                <Text style={[styles.sectionTextStyle,this.props.sectionTextStyle]}>{this.props.labelExtractor(section)}</Text>
-            </View>
-        );
-    }
+    renderSection = section => (
+        <View key={this.props.keyExtractor(section)} style={[styles.sectionStyle,this.props.sectionStyle]}>
+            <Text style={[styles.sectionTextStyle,this.props.sectionTextStyle]}>{this.props.labelExtractor(section)}</Text>
+        </View>
+    )
 
-    renderOption = (option, isLastItem) => {
-        return (
-            <TouchableOpacity
-              key={this.props.keyExtractor(option)}
-              onPress={() => this.onChange(option)}
-              activeOpacity={this.props.touchableActiveOpacity}
-              accessible={this.props.accessible}
-              {...this.props.passThruProps}
-            >
-                <View accessibilityLabel={`really${this.props.labelExtractor(option)}`} style={[styles.optionStyle, this.props.optionStyle, isLastItem &&
+    renderOption = (option, isLastItem) => (
+        <TouchableOpacity
+            key={this.props.keyExtractor(option)}
+            onPress={() => this.onChange(option)}
+            activeOpacity={this.props.touchableActiveOpacity}
+            accessible={this.props.accessible}
+            {...this.props.passThruProps}
+        >
+            <View style={[styles.optionStyle, this.props.optionStyle, isLastItem &&
                 {borderBottomWidth: 0}]}>
-                    <Text style={[styles.optionTextStyle,this.props.optionTextStyle]}>{this.props.labelExtractor(option)}</Text>
-                </View>
-            </TouchableOpacity>);
-    }
+                <Text accessibilityLabel={`really${this.props.labelExtractor(option)}`} style={[styles.optionTextStyle,this.props.optionTextStyle]}>{this.props.labelExtractor(option)}</Text>
+            </View>
+        </TouchableOpacity>)
 
     renderOptionList = () => {
 
@@ -189,7 +185,7 @@ export default class ModalSelector extends React.Component {
         const closeOverlay = this.props.backdropPressToClose;
 
         return (
-            <TouchableWithoutFeedback key={'modalSelector' + (componentIndex++)}  accessible={false} onPress={() => {
+            <TouchableWithoutFeedback key={'modalSelector' + (componentIndex++)} accessible={false} onPress={() => {
                 closeOverlay && this.close();
             }}>
                 <View style={[styles.overlayStyle, this.props.overlayStyle]}>
